@@ -21,4 +21,8 @@ There are some keyboard shortcuts and mouse shortcuts built in this software to 
 * To clear the arrow of a grid, right click the mouse on the grid. Or you can click on the grid and press `E` on the keyboard to clear the arrow. The button `Clear` will also do the trick for you.
 * To clear all of the arrows that are currently set, you can press `R` on the keyboard, or you can press the button `Reset All Arrows`
 * There is a `Place Arrow Mode` built in this software, which could help you use mouse to quickly set the arrows for the grids. Normally, you can set the arrows for the grids by clicking on a grid and then click on the arrows button with the desired direction on the right side of the screen in the software, but this will be kind of slow and inconvenient. You can press the button `Normal Mode` or press `Tab` on the keyboard to switch between Normal Mode and Place Arrow Mode. When you are in Place Arrow Mode, you can click on a grid and then firstly set the grid to left direction with an arrow. You can click the grid again to set it to up direction, and then right direction, and then down direction, and then left direction again for a new loop. To clear the arrow, it is the same as usual, right click the mouse or use 'E' on the keyboard.
-* 
+* You can press `space` on the keyboard to start playing with current grids, and press `space` again to stop current playing. You can also press the `Start` and `Stop` button to start and stop playing with current grids.
+* press `Q` on the keyboard or click the `Set As Start Grid` button to set the grid you are currently clicked on as the starting grid (there must be an arrow in this grid)
+* press 'T' on the keyboard or click the `Change Settings` button to open the change settings window
+
+Here is a screenshot of this software:
