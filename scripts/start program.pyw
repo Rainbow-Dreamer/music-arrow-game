@@ -5,7 +5,7 @@ from PIL import ImageTk
 import time
 import random
 import keyboard
-from copy import deepcopy as cop
+from copy import deepcopy as copy
 import os, sys
 import pygame
 import keyboard

@@ -12,14 +12,14 @@ def load(dic, path, file_format, volume):
     return wavedict
 
 
-pygame.mixer.init(frequency, sound_size, channel, buffer)
-pygame.mixer.set_num_channels(maxinum_channels)
-note_sounds = load(notedict, sound_path, sound_format, global_volume)
-
-
 def play_note(name):
     if name in note_sounds:
         note_sounds[name].play(maxtime=note_play_last_time)
+
+
+pygame.mixer.init(frequency, sound_size, channel, buffer)
+pygame.mixer.set_num_channels(maxinum_channels)
+note_sounds = load(notedict, sound_path, sound_format, global_volume)
 
 
 class Root(Tk):
@@ -32,9 +32,135 @@ class Root(Tk):
         style.configure('TButton', font=(font_type, font_size))
 
         self.draw_board()
-        self.msg = ttk.Label(self, text='')
-        self.msg.place(x=600, y=400)
         self.set_notes()
+        self.draw_settings_buttons()
+        self.load_arrows_imgs()
+        self.draw_arrows_buttons()
+
+        self.current_focus = 0, 0
+
+        self.draw_arrows_settings_buttons()
+
+        self.start_moving = False
+        self.move_speed = move_speed
+        self.stop = False
+        self.set_arrows_blocks = []
+
+        self.bind_keys()
+
+    def bind_keys(self):
+        self.bind('<Up>', lambda e: self.set_arrow('up'))
+        self.bind('<Down>', lambda e: self.set_arrow('down'))
+        self.bind('<Left>', lambda e: self.set_arrow('left'))
+        self.bind('<Right>', lambda e: self.set_arrow('right'))
+        self.unbind_class('TButton', '<space>')
+        self.bind("<space>", lambda e: self.switch_play())
+        self.bind("<q>", lambda e: self.set_as_first())
+        self.bind("<Tab>", lambda e: self.change_mode())
+        self.bind("<e>", lambda e: self.clear_current_block())
+        self.bind("<r>", lambda e: self.reset_all_blocks())
+        self.bind("<t>", lambda e: self.open_change_settings())
+
+    def draw_arrows_settings_buttons(self):
+        clear_button = ttk.Button(self,
+                                  text='Clear',
+                                  command=self.clear_current_block)
+        clear_all_button = ttk.Button(self,
+                                      text='Reset All Arrows',
+                                      command=self.reset_all_blocks)
+        clear_button.place(x=1080, y=200)
+        clear_all_button.place(x=1080, y=250)
+
+        start_button = ttk.Button(self, text='Start', command=self.start)
+        start_button.place(x=600, y=80)
+
+        self.stop_button = ttk.Button(self,
+                                      text='Stop',
+                                      command=self.stop_move)
+        self.stop_button.place(x=700, y=80)
+
+        self.place_arrow = False
+        self.place_arrow_button = ttk.Button(self,
+                                             text='Normal Mode',
+                                             command=self.change_mode)
+        self.place_arrow_button.place(x=1080, y=300)
+
+    def draw_arrows_buttons(self):
+        left_button = ttk.Button(self,
+                                 image=self.left_arrow_show_img,
+                                 command=lambda: self.set_arrow('left'))
+        right_button = ttk.Button(self,
+                                  image=self.right_arrow_show_img,
+                                  command=lambda: self.set_arrow('right'))
+        up_button = ttk.Button(self,
+                               image=self.up_arrow_show_img,
+                               command=lambda: self.set_arrow('up'))
+        down_button = ttk.Button(self,
+                                 image=self.down_arrow_show_img,
+                                 command=lambda: self.set_arrow('down'))
+        left_button.place(x=950, y=200)
+        right_button.place(x=1030, y=200)
+        up_button.place(x=990, y=160)
+        down_button.place(x=990, y=240)
+        self.set_as_first_button = ttk.Button(self,
+                                              text='Set As Start Grid',
+                                              command=self.set_as_first)
+        self.set_as_first_button.place(x=1080, y=350)
+
+    def load_arrows_imgs(self):
+        self.right_arrow_img = PIL_Image.open('resources/right.png')
+        self.right_arrow_img = self.right_arrow_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.right_arrow_show_img = ImageTk.PhotoImage(
+            self.right_arrow_img.copy())
+        self.right_arrow_img = ImageTk.PhotoImage(self.right_arrow_img)
+        self.right_arrow_first_img = PIL_Image.open(
+            'resources/right_first.png')
+        self.right_arrow_first_img = self.right_arrow_first_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.right_arrow_first_img = ImageTk.PhotoImage(
+            self.right_arrow_first_img)
+
+        self.left_arrow_img = PIL_Image.open('resources/left.png')
+        self.left_arrow_img = self.left_arrow_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.left_arrow_show_img = ImageTk.PhotoImage(
+            self.left_arrow_img.copy())
+        self.left_arrow_img = ImageTk.PhotoImage(self.left_arrow_img)
+        self.left_arrow_first_img = PIL_Image.open('resources/left_first.png')
+        self.left_arrow_first_img = self.left_arrow_first_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.left_arrow_first_img = ImageTk.PhotoImage(
+            self.left_arrow_first_img)
+
+        self.up_arrow_img = PIL_Image.open('resources/up.png')
+        self.up_arrow_img = self.up_arrow_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.up_arrow_show_img = ImageTk.PhotoImage(self.up_arrow_img.copy())
+        self.up_arrow_img = ImageTk.PhotoImage(self.up_arrow_img)
+        self.up_arrow_first_img = PIL_Image.open('resources/up_first.png')
+        self.up_arrow_first_img = self.up_arrow_first_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.up_arrow_first_img = ImageTk.PhotoImage(self.up_arrow_first_img)
+
+        self.down_arrow_img = PIL_Image.open('resources/down.png')
+        self.down_arrow_img = self.down_arrow_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.down_arrow_show_img = ImageTk.PhotoImage(
+            self.down_arrow_img.copy())
+        self.down_arrow_img = ImageTk.PhotoImage(self.down_arrow_img)
+        self.down_arrow_first_img = PIL_Image.open('resources/down_first.png')
+        self.down_arrow_first_img = self.down_arrow_first_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.down_arrow_first_img = ImageTk.PhotoImage(
+            self.down_arrow_first_img)
+
+        self.move_img = PIL_Image.open('resources/move.png')
+        self.move_img = self.move_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.move_img = ImageTk.PhotoImage(self.move_img)
+
+    def draw_settings_buttons(self):
         self.set_size_button = ttk.Button(self,
                                           text='Change Size',
                                           command=self.set_size)
@@ -119,91 +245,28 @@ class Root(Tk):
         self.set_move_speed_entry.place(x=900, y=80)
         self.set_move_speed.place(x=1000, y=80)
 
-        self.right_arrow_img = PIL_Image.open('resources/right.png')
-        self.right_arrow_img = self.right_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
-        self.right_arrow_show_img = ImageTk.PhotoImage(
-            self.right_arrow_img.copy())
-        self.right_arrow_img = ImageTk.PhotoImage(self.right_arrow_img)
-
-        self.left_arrow_img = PIL_Image.open('resources/left.png')
-        self.left_arrow_img = self.left_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
-        self.left_arrow_show_img = ImageTk.PhotoImage(
-            self.left_arrow_img.copy())
-        self.left_arrow_img = ImageTk.PhotoImage(self.left_arrow_img)
-
-        self.up_arrow_img = PIL_Image.open('resources/up.png')
-        self.up_arrow_img = self.up_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
-        self.up_arrow_show_img = ImageTk.PhotoImage(self.up_arrow_img.copy())
-        self.up_arrow_img = ImageTk.PhotoImage(self.up_arrow_img)
-
-        self.down_arrow_img = PIL_Image.open('resources/down.png')
-        self.down_arrow_img = self.down_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
-        self.down_arrow_show_img = ImageTk.PhotoImage(
-            self.down_arrow_img.copy())
-        self.down_arrow_img = ImageTk.PhotoImage(self.down_arrow_img)
-
-        self.move_img = PIL_Image.open('resources/move.png')
-        self.move_img = self.move_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
-        self.move_img = ImageTk.PhotoImage(self.move_img)
-
-        left_button = ttk.Button(self,
-                                 image=self.left_arrow_show_img,
-                                 command=lambda: self.set_arrow('left'))
-        right_button = ttk.Button(self,
-                                  image=self.right_arrow_show_img,
-                                  command=lambda: self.set_arrow('right'))
-        up_button = ttk.Button(self,
-                               image=self.up_arrow_show_img,
-                               command=lambda: self.set_arrow('up'))
-        down_button = ttk.Button(self,
-                                 image=self.down_arrow_show_img,
-                                 command=lambda: self.set_arrow('down'))
-        left_button.place(x=950, y=200)
-        right_button.place(x=1030, y=200)
-        up_button.place(x=990, y=160)
-        down_button.place(x=990, y=240)
-
-        self.current_focus = 0, 0
-
-        clear_button = ttk.Button(self,
-                                  text='Clear',
-                                  command=self.clear_current_block)
-        clear_all_button = ttk.Button(self,
-                                      text='Reset All Arrows',
-                                      command=self.reset_all_blocks)
-        clear_button.place(x=1080, y=200)
-        clear_all_button.place(x=1080, y=250)
-
-        self.first_set_block = 0, 0
-        self.first_set = True
-
-        start_button = ttk.Button(self, text='Start', command=self.start)
-        start_button.place(x=600, y=80)
-
-        self.start_moving = False
-        self.move_speed = move_speed
-        self.stop = False
-
-        self.stop_button = ttk.Button(self,
-                                      text='Stop',
-                                      command=self.stop_move)
-        self.stop_button.place(x=700, y=80)
-
-        self.place_arrow = False
-        self.place_arrow_button = ttk.Button(self,
-                                             text='Normal Mode',
-                                             command=self.change_mode)
-        self.place_arrow_button.place(x=1080, y=300)
-
         self.change_settings_button = ttk.Button(
             self, text='Change Settings', command=self.open_change_settings)
         self.change_settings_button.place(x=850, y=10)
         self.open_settings = False
+
+    def switch_play(self):
+        if self.start_moving:
+            self.stop_move()
+        else:
+            self.start()
+
+    def set_as_first(self):
+        current_focus = self.current_focus
+        if list(current_focus) in self.set_arrows_blocks:
+            if self.set_arrows_blocks[0] != list(current_focus):
+                first_block = self.set_arrows_blocks[0]
+                self.set_arrows_blocks.insert(
+                    0,
+                    self.set_arrows_blocks.pop(
+                        self.set_arrows_blocks.index(list(current_focus))))
+                self.reset_arrow_img(*current_focus)
+                self.reset_arrow_img(*first_block)
 
     def open_change_settings(self):
         if not self.open_settings:
@@ -233,24 +296,25 @@ class Root(Tk):
             self.reset_arrow_img(*self.current_place)
             return
         if first:
-
-            current_block = self.blocks[self.first_set_block[0]][
-                self.first_set_block[1]]
             self.msg.configure(text='')
-            if current_block.direction == 'none':
-                self.msg.configure(text='Missing block for first arrow')
+            if not self.set_arrows_blocks:
+                self.msg.configure(
+                    text='There are no arrows for any grids now')
                 return
             else:
                 if not self.start_moving:
                     self.start_moving = True
                 else:
                     return
-                self.current_place = self.first_set_block
+                first_block = self.set_arrows_blocks[0]
+                current_block = self.blocks[first_block[0]][first_block[1]]
+                self.current_place = first_block
                 self.current_direction = current_block.direction
                 self.blocks[self.current_place[0]][
                     self.current_place[1]].configure(image=self.move_img)
                 self.play_current_note_move(*self.current_place)
                 self.after(self.move_speed, lambda: self.start(False))
+
         else:
             self.reset_arrow_img(*self.current_place)
             if self.current_direction == 'left':
@@ -287,62 +351,104 @@ class Root(Tk):
             self.after(self.move_speed, lambda: self.start(False))
 
     def set_arrow(self, mode):
+        current_first = False
         current_focus = self.current_focus
+        if (not self.set_arrows_blocks) or (self.set_arrows_blocks
+                                            and list(current_focus)
+                                            == self.set_arrows_blocks[0]):
+            current_first = True
+        if list(current_focus) not in self.set_arrows_blocks:
+            self.set_arrows_blocks.append(list(current_focus))
         current_block = self.blocks[current_focus[0]][current_focus[1]]
-        if self.first_set:
-            self.first_set = False
-            self.first_set_block = current_focus
         if mode == 'left':
-            current_block.configure(image=self.left_arrow_img)
+            current_block.configure(
+                image=self.left_arrow_img if not current_first else self.
+                left_arrow_first_img)
             current_block.direction = 'left'
         elif mode == 'right':
-            current_block.configure(image=self.right_arrow_img)
+            current_block.configure(
+                image=self.right_arrow_img if not current_first else self.
+                right_arrow_first_img)
             current_block.direction = 'right'
         elif mode == 'up':
-            current_block.configure(image=self.up_arrow_img)
+            current_block.configure(
+                image=self.up_arrow_img if not current_first else self.
+                up_arrow_first_img)
             current_block.direction = 'up'
         elif mode == 'down':
-            current_block.configure(image=self.down_arrow_img)
+            current_block.configure(
+                image=self.down_arrow_img if not current_first else self.
+                down_arrow_first_img)
             current_block.direction = 'down'
         elif mode == 'none':
             current_block.configure(image=self.block_img)
             current_block.direction = 'none'
 
     def reset_arrow_img(self, i=0, j=0, current_block=None):
+        current_first = False
+
         if current_block is None:
             current_block = self.blocks[i][j]
+            if self.set_arrows_blocks:
+                if [i, j] == self.set_arrows_blocks[0]:
+                    current_first = True
+        else:
+            if self.set_arrows_blocks:
+                first_block = self.set_arrows_blocks[0]
+                if self.blocks[first_block[0]][
+                        first_block[1]] == current_block:
+                    current_first = True
         if current_block.direction == 'left':
-            current_block.configure(image=self.left_arrow_img)
+            current_block.configure(
+                image=self.left_arrow_img if not current_first else self.
+                left_arrow_first_img)
         elif current_block.direction == 'right':
-            current_block.configure(image=self.right_arrow_img)
+            current_block.configure(
+                image=self.right_arrow_img if not current_first else self.
+                right_arrow_first_img)
         elif current_block.direction == 'up':
-            current_block.configure(image=self.up_arrow_img)
+            current_block.configure(
+                image=self.up_arrow_img if not current_first else self.
+                up_arrow_first_img)
         elif current_block.direction == 'down':
-            current_block.configure(image=self.down_arrow_img)
+            current_block.configure(
+                image=self.down_arrow_img if not current_first else self.
+                down_arrow_first_img)
         elif current_block.direction == 'none':
             current_block.configure(image=self.block_img)
 
     def clear_current_block(self):
+        current_first = False
         current_focus = self.current_focus
-        if current_focus == self.first_set_block:
-            self.first_set = True
+        if self.set_arrows_blocks and list(
+                current_focus) == self.set_arrows_blocks[0]:
+            current_first = True
+        if list(current_focus) in self.set_arrows_blocks:
+            self.set_arrows_blocks.remove(list(current_focus))
+        if self.set_arrows_blocks and current_first:
+            self.reset_arrow_img(*self.set_arrows_blocks[0])
         current_block = self.blocks[current_focus[0]][current_focus[1]]
         current_block.configure(image=self.block_img)
         current_block.direction = 'none'
 
     def clear_block(self, i, j):
-        if (i, j) == self.first_set_block:
-            self.first_set = True
+        current_first = False
+        if self.set_arrows_blocks and [i, j] == self.set_arrows_blocks[0]:
+            current_first = True
+        if [i, j] in self.set_arrows_blocks:
+            self.set_arrows_blocks.remove([i, j])
+        if self.set_arrows_blocks and current_first:
+            self.reset_arrow_img(*self.set_arrows_blocks[0])
         current_block = self.blocks[i][j]
         current_block.configure(image=self.block_img)
         current_block.direction = 'none'
 
     def reset_all_blocks(self):
-        self.first_set = True
         for i in self.blocks:
             for j in i:
                 j.configure(image=self.block_img)
                 j.direction = 'none'
+        self.set_arrows_blocks.clear()
 
     def change_move_speed(self):
         self.move_speed = int(self.set_move_speed_entry.get())
@@ -433,6 +539,8 @@ class Root(Tk):
                 current_block.grid(row=i, column=j)
                 current_row.append(current_block)
             self.blocks.append(current_row)
+        self.msg = ttk.Label(self, text='')
+        self.msg.place(x=600, y=400)
 
     def set_notes(self):
         global chord_root
@@ -590,21 +698,41 @@ class Root(Tk):
         self.right_arrow_img = self.right_arrow_img.resize(
             (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
         self.right_arrow_img = ImageTk.PhotoImage(self.right_arrow_img)
+        self.right_arrow_first_img = PIL_Image.open(
+            'resources/right_first.png')
+        self.right_arrow_first_img = self.right_arrow_first_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.right_arrow_first_img = ImageTk.PhotoImage(
+            self.right_arrow_first_img)
 
         self.left_arrow_img = PIL_Image.open('resources/left.png')
         self.left_arrow_img = self.left_arrow_img.resize(
             (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
         self.left_arrow_img = ImageTk.PhotoImage(self.left_arrow_img)
+        self.left_arrow_first_img = PIL_Image.open('resources/left_first.png')
+        self.left_arrow_first_img = self.left_arrow_first_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.left_arrow_first_img = ImageTk.PhotoImage(
+            self.left_arrow_first_img)
 
         self.up_arrow_img = PIL_Image.open('resources/up.png')
         self.up_arrow_img = self.up_arrow_img.resize(
             (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
         self.up_arrow_img = ImageTk.PhotoImage(self.up_arrow_img)
+        self.up_arrow_first_img = PIL_Image.open('resources/up_first.png')
+        self.up_arrow_first_img = self.up_arrow_first_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.up_arrow_first_img = ImageTk.PhotoImage(self.up_arrow_first_img)
 
         self.down_arrow_img = PIL_Image.open('resources/down.png')
         self.down_arrow_img = self.down_arrow_img.resize(
             (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
         self.down_arrow_img = ImageTk.PhotoImage(self.down_arrow_img)
+        self.down_arrow_first_img = PIL_Image.open('resources/down_first.png')
+        self.down_arrow_first_img = self.down_arrow_first_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.down_arrow_first_img = ImageTk.PhotoImage(
+            self.down_arrow_first_img)
 
         self.move_img = PIL_Image.open('resources/move.png')
         self.move_img = self.move_img.resize(
