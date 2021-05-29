@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
-from PIL import Image, ImageTk
+from PIL import Image as PIL_Image
+from PIL import ImageTk
 import time
 import random
 import keyboard
@@ -137,42 +138,49 @@ class Root(Tk):
         self.set_move_speed_entry.place(x=900, y=80)
         self.set_move_speed.place(x=1000, y=80)
 
-        self.right_arrow_img = Image.open('resources/right.png')
+        self.right_arrow_img = PIL_Image.open('resources/right.png')
         self.right_arrow_img = self.right_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.right_arrow_show_img = ImageTk.PhotoImage(
+            self.right_arrow_img.copy())
         self.right_arrow_img = ImageTk.PhotoImage(self.right_arrow_img)
 
-        self.left_arrow_img = Image.open('resources/left.png')
+        self.left_arrow_img = PIL_Image.open('resources/left.png')
         self.left_arrow_img = self.left_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.left_arrow_show_img = ImageTk.PhotoImage(
+            self.left_arrow_img.copy())
         self.left_arrow_img = ImageTk.PhotoImage(self.left_arrow_img)
 
-        self.up_arrow_img = Image.open('resources/up.png')
+        self.up_arrow_img = PIL_Image.open('resources/up.png')
         self.up_arrow_img = self.up_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.up_arrow_show_img = ImageTk.PhotoImage(self.up_arrow_img.copy())
         self.up_arrow_img = ImageTk.PhotoImage(self.up_arrow_img)
 
-        self.down_arrow_img = Image.open('resources/down.png')
+        self.down_arrow_img = PIL_Image.open('resources/down.png')
         self.down_arrow_img = self.down_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.down_arrow_show_img = ImageTk.PhotoImage(
+            self.down_arrow_img.copy())
         self.down_arrow_img = ImageTk.PhotoImage(self.down_arrow_img)
 
-        self.move_img = Image.open('resources/move.png')
+        self.move_img = PIL_Image.open('resources/move.png')
         self.move_img = self.move_img.resize(
-            (self.unit_size[0], self.unit_size[1]), Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
         self.move_img = ImageTk.PhotoImage(self.move_img)
 
         left_button = ttk.Button(self,
-                                 image=self.left_arrow_img,
+                                 image=self.left_arrow_show_img,
                                  command=lambda: self.set_arrow('left'))
         right_button = ttk.Button(self,
-                                  image=self.right_arrow_img,
+                                  image=self.right_arrow_show_img,
                                   command=lambda: self.set_arrow('right'))
         up_button = ttk.Button(self,
-                               image=self.up_arrow_img,
+                               image=self.up_arrow_show_img,
                                command=lambda: self.set_arrow('up'))
         down_button = ttk.Button(self,
-                                 image=self.down_arrow_img,
+                                 image=self.down_arrow_show_img,
                                  command=lambda: self.set_arrow('down'))
         left_button.place(x=950, y=200)
         right_button.place(x=1030, y=200)
@@ -210,6 +218,20 @@ class Root(Tk):
                                              text='Normal Mode',
                                              command=self.change_mode)
         self.place_arrow_button.place(x=1080, y=300)
+
+        self.change_settings_button = ttk.Button(
+            self, text='Change Settings', command=self.open_change_settings)
+        self.change_settings_button.place(x=850, y=10)
+        self.open_settings = False
+
+    def open_change_settings(self):
+        if not self.open_settings:
+            self.open_settings = True
+        else:
+            return
+        os.chdir('tools')
+        with open('change_settings.pyw') as f:
+            exec(f.read(), globals(), globals())
 
     def change_mode(self):
         if not self.place_arrow:
@@ -305,8 +327,9 @@ class Root(Tk):
             current_block.configure(image=self.block_img)
             current_block.direction = 'none'
 
-    def reset_arrow_img(self, i, j):
-        current_block = self.blocks[i][j]
+    def reset_arrow_img(self, i=0, j=0, current_block=None):
+        if current_block is None:
+            current_block = self.blocks[i][j]
         if current_block.direction == 'left':
             current_block.configure(image=self.left_arrow_img)
         elif current_block.direction == 'right':
@@ -407,10 +430,10 @@ class Root(Tk):
     def draw_board(self):
         self.block_size = size
         self.board = ttk.LabelFrame(width=600, height=500)
-        self.block_img = Image.open('resources/block.png')
+        self.block_img = PIL_Image.open('resources/block.png')
         self.unit_size = unit_size
         self.block_img = self.block_img.resize(
-            (self.unit_size[0], self.unit_size[1]), Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
         self.block_img = ImageTk.PhotoImage(self.block_img)
         self.block_width = self.block_img.width
         self.blocks = []
@@ -575,16 +598,41 @@ class Root(Tk):
         self.reset_note()
 
     def set_block_size(self):
-        self.block_img = Image.open('resources/block.png')
+        self.block_img = PIL_Image.open('resources/block.png')
         self.unit_size = int(self.set_block_size_width_entry.get()), int(
             self.set_block_size_height_entry.get())
         self.block_img = self.block_img.resize(
-            (self.unit_size[0], self.unit_size[1]), Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
         self.block_img = ImageTk.PhotoImage(self.block_img)
         self.block_width = self.block_img.width
+        self.right_arrow_img = PIL_Image.open('resources/right.png')
+        self.right_arrow_img = self.right_arrow_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.right_arrow_img = ImageTk.PhotoImage(self.right_arrow_img)
+
+        self.left_arrow_img = PIL_Image.open('resources/left.png')
+        self.left_arrow_img = self.left_arrow_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.left_arrow_img = ImageTk.PhotoImage(self.left_arrow_img)
+
+        self.up_arrow_img = PIL_Image.open('resources/up.png')
+        self.up_arrow_img = self.up_arrow_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.up_arrow_img = ImageTk.PhotoImage(self.up_arrow_img)
+
+        self.down_arrow_img = PIL_Image.open('resources/down.png')
+        self.down_arrow_img = self.down_arrow_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.down_arrow_img = ImageTk.PhotoImage(self.down_arrow_img)
+
+        self.move_img = PIL_Image.open('resources/move.png')
+        self.move_img = self.move_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.move_img = ImageTk.PhotoImage(self.move_img)
         for i in self.blocks:
             for j in i:
                 j.configure(image=self.block_img, width=self.block_width)
+                self.reset_arrow_img(current_block=j)
 
 
 root = Root()

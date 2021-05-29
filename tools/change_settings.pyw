@@ -23,7 +23,7 @@ def get_all_config_options(text):
 
 
 def change(var, new, is_str=True):
-    text = open('settings.py', encoding='utf-8').read()
+    text = open('../settings.py', encoding='utf-8').read()
     text_ls = list(text)
     var_len = len(var) + 1
     var_ind = text.index('\n' + var + ' ') + var_len
@@ -42,15 +42,16 @@ def change(var, new, is_str=True):
         text_ls[var_ind:next_var_ind] = f" = '{new}'"
     else:
         text_ls[var_ind:next_var_ind] = f" = {new}"
-    with open('settings.py', 'w', encoding='utf-8') as f:
+    with open('../settings.py', 'w', encoding='utf-8') as f:
         f.write(''.join(text_ls))
 
 
-class Root(Tk):
+class Root2(Tk):
     def __init__(self):
-        super(Root, self).__init__()
+        super(Root2, self).__init__()
         self.title("Settings")
         self.minsize(800, 600)
+        self.protocol("WM_DELETE_WINDOW", self.close_settings_box)
         self.config_options_bar = Scrollbar(self)
         self.config_options_bar.place(x=235, y=120, height=170, anchor=CENTER)
         self.choose_config_options = Listbox(
@@ -121,10 +122,31 @@ class Root(Tk):
         self.choose_bool1.place(x=120, y=270)
         self.choose_bool2.place(x=220, y=270)
         self.change_sort_button = ttk.Button(self,
-                                             text="sort in alphabetical order",
+                                             text="sort in order of appearance",
                                              command=self.change_sort)
         self.sort_mode = 0
+        self.change_sort()
         self.change_sort_button.place(x=150, y=400)
+        
+        self.reload_button = ttk.Button(self, text='Reload', command=self.reload)
+        self.reload_button.place(x=350, y=480)
+    
+    def close_settings_box(self):
+        try:
+            root.open_settings = False
+            os.chdir('..')
+        except:
+            pass
+        self.destroy()
+    
+    def reload(self):
+        try:
+            root.destroy()
+            self.destroy()
+            os.chdir('..')
+            os.startfile('music arrow game.pyw')
+        except:
+            pass
 
     def change_sort(self):
         global all_config_options
@@ -242,5 +264,5 @@ class Root(Tk):
             self.show_saved()
 
 
-root = Root()
-root.mainloop()
+root2 = Root2()
+root2.mainloop()
