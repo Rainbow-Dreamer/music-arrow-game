@@ -101,7 +101,7 @@ notedict = {
 note_play_last_time = 2000
 
 chord_type = 'maj7'
-chord_root = 'Eb'
+chord_root = 'C'
 start_octave = 2
 chord_intervals = None
 
