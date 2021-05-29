@@ -1,8 +1,4 @@
-from tkinter import *
-from tkinter import ttk
-from tkinter import filedialog
-from ast import literal_eval
-with open('../settings.py', encoding='utf-8-sig') as f:
+with open('settings.py', encoding='utf-8-sig') as f:
     text = f.read()
     exec(text)
 
@@ -23,7 +19,7 @@ def get_all_config_options(text):
 
 
 def change(var, new, is_str=True):
-    text = open('../settings.py', encoding='utf-8').read()
+    text = open('settings.py', encoding='utf-8').read()
     text_ls = list(text)
     var_len = len(var) + 1
     var_ind = text.index('\n' + var + ' ') + var_len
@@ -42,7 +38,7 @@ def change(var, new, is_str=True):
         text_ls[var_ind:next_var_ind] = f" = '{new}'"
     else:
         text_ls[var_ind:next_var_ind] = f" = {new}"
-    with open('../settings.py', 'w', encoding='utf-8') as f:
+    with open('settings.py', 'w', encoding='utf-8') as f:
         f.write(''.join(text_ls))
 
 
@@ -121,16 +117,17 @@ class Root2(Tk):
             self, text='False', command=lambda: self.insert_bool('False'))
         self.choose_bool1.place(x=120, y=270)
         self.choose_bool2.place(x=220, y=270)
-        self.change_sort_button = ttk.Button(self,
-                                             text="sort in order of appearance",
-                                             command=self.change_sort)
+        self.change_sort_button = ttk.Button(
+            self, text="sort in order of appearance", command=self.change_sort)
         self.sort_mode = 0
         self.change_sort()
         self.change_sort_button.place(x=150, y=400)
-        
-        self.reload_button = ttk.Button(self, text='Reload', command=self.reload)
+
+        self.reload_button = ttk.Button(self,
+                                        text='Reload',
+                                        command=self.reload)
         self.reload_button.place(x=350, y=480)
-    
+
     def close_settings_box(self):
         try:
             root.open_settings = False
@@ -138,13 +135,13 @@ class Root2(Tk):
         except:
             pass
         self.destroy()
-    
+
     def reload(self):
         try:
             root.destroy()
             self.destroy()
             os.chdir('..')
-            os.startfile('music arrow game.pyw')
+            os.startfile('music arrow game.exe')
         except:
             pass
 
