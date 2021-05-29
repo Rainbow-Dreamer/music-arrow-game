@@ -25,4 +25,9 @@ There are some keyboard shortcuts and mouse shortcuts built in this software to 
 * press `Q` on the keyboard or click the `Set As Start Grid` button to set the grid you are currently clicked on as the starting grid (there must be an arrow in this grid)
 * press 'T' on the keyboard or click the `Change Settings` button to open the change settings window
 
-Here is a screenshot of this software:
+The note names with octaves will appear on each grid as the note that each grid currently corresponds to, and when you click on the grid, it will play the sound file that the note of this grid corresponds to, in other words, when you click on a grid, it will play the note for you.
+
+The move speed is the time interval of each move in milliseconds (ms), the smaller it is, the faster the playing moves through the grids.
+
+Here is a screenshot of this software:  
+![image](previews/1.jpg)
