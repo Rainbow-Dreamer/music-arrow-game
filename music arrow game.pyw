@@ -346,23 +346,22 @@ class Root(Tk):
     def change_chord_type(self):
         self.msg.configure(text='')
         current_chord_type = self.set_chord_type_entry.get()
-        if current_chord_type:
-            self.chord_type = current_chord_type
-            self.current_chord = C(self.chord_root + self.chord_type)
-            if type(self.current_chord) == str:
-                if any(i.isdigit() for i in self.chord_root):
-                    self.msg.configure(
-                        text=
-                        'Error: Chord root must be only the name of the note, not including the octave'
-                    )
-                else:
-                    self.msg.configure(text='Error: Chord type is not found')
-                return
-            self.current_chord_intervals = (
-                self.current_chord +
-                self.current_chord[1].up(octave)).intervalof(cummulative=False)
-            self.current_chord_names = self.current_chord.names()
-            self.reset_note()
+        self.chord_type = current_chord_type
+        self.current_chord = C(self.chord_root + self.chord_type)
+        if type(self.current_chord) == str:
+            if any(i.isdigit() for i in self.chord_root):
+                self.msg.configure(
+                    text=
+                    'Error: Chord root must be only the name of the note, not including the octave'
+                )
+            else:
+                self.msg.configure(text='Error: Chord type is not found')
+            return
+        self.current_chord_intervals = (
+            self.current_chord +
+            self.current_chord[1].up(octave)).intervalof(cummulative=False)
+        self.current_chord_names = self.current_chord.names()
+        self.reset_note()
 
     def change_chord_root(self):
         self.msg.configure(text='')
