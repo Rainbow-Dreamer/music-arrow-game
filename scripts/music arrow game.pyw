@@ -238,7 +238,7 @@ class Root(Tk):
                 self.first_set_block[1]]
             self.msg.configure(text='')
             if current_block.direction == 'none':
-                self.msg.configure(text='There are no arrows are set now')
+                self.msg.configure(text='Missing block for first arrow')
                 return
             else:
                 if not self.start_moving:
