@@ -30,4 +30,4 @@ The note names with octaves will appear on each grid as the note that each grid 
 The move speed is the time interval of each move in milliseconds (ms), the smaller it is, the faster the playing moves through the grids.
 
 Here is a screenshot of this software:  
-![image](previews/1.jpg)
+![image](https://github.com/Rainbow-Dreamer/music-arrow-game/blob/main/previews/1.jpg)
