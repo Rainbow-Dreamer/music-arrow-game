@@ -1,3 +1,4 @@
+
 sound_path = 'resources/sounds'
 sound_format = 'wav'
 global_volume = 1
