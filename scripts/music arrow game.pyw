@@ -54,12 +54,12 @@ class Root(Tk):
         self.bind('<Left>', lambda e: self.set_arrow('left'))
         self.bind('<Right>', lambda e: self.set_arrow('right'))
         self.unbind_class('TButton', '<space>')
-        self.bind("<space>", lambda e: self.switch_play())
-        self.bind("<q>", lambda e: self.set_as_first())
+        self.bind("<Control-space>", lambda e: self.switch_play())
+        self.bind("<Control-q>", lambda e: self.set_as_first())
         self.bind("<Tab>", lambda e: self.change_mode())
-        self.bind("<e>", lambda e: self.clear_current_block())
-        self.bind("<r>", lambda e: self.reset_all_blocks())
-        self.bind("<t>", lambda e: self.open_change_settings())
+        self.bind("<Control-e>", lambda e: self.clear_current_block())
+        self.bind("<Control-r>", lambda e: self.reset_all_blocks())
+        self.bind("<Control-t>", lambda e: self.open_change_settings())
 
     def draw_arrows_settings_buttons(self):
         clear_button = ttk.Button(self,
