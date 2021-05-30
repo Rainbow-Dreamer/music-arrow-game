@@ -227,6 +227,7 @@ class Root2(Tk):
 
     def choose_filename(self):
         filename = filedialog.askopenfilename(initialdir='.',
+                                              parent=self,
                                               title="choose filename",
                                               filetype=(("all files",
                                                          "*.*"), ))
@@ -237,6 +238,7 @@ class Root2(Tk):
     def choose_directory(self):
         directory = filedialog.askdirectory(
             initialdir='.',
+            parent=self,
             title="choose directory",
         )
         self.config_contents.delete('1.0', END)

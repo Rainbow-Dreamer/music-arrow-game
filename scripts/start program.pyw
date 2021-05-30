@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import filedialog
 from PIL import Image as PIL_Image
 from PIL import ImageTk
 import time
