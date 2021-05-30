@@ -458,7 +458,7 @@ class Root(Tk):
         current_chord_type = self.set_chord_type_entry.get()
         self.chord_type = current_chord_type
         self.current_chord = C(self.chord_root + self.chord_type)
-        if type(self.current_chord) == str:
+        if type(self.current_chord) == str or self.current_chord is None:
             if any(i.isdigit() for i in self.chord_root):
                 self.msg.configure(
                     text=
@@ -664,6 +664,7 @@ class Root(Tk):
         play_note(str(current_block.note))
 
     def set_size(self):
+        current_arrows_blocks = [[each, self.blocks[each[0]][each[1]].direction] for each in self.set_arrows_blocks]
         self.block_size = int(self.set_size_width_entry.get()), int(
             self.set_size_height_entry.get())
         self.board.destroy()
@@ -685,6 +686,13 @@ class Root(Tk):
                 current_row.append(current_block)
             self.blocks.append(current_row)
         self.reset_note()
+        for each in current_arrows_blocks:
+            try:
+                current_block = self.blocks[each[0][0]][each[0][1]]
+                current_block.direction = each[1]
+                self.reset_arrow_img(current_block=current_block)
+            except:
+                self.set_arrows_blocks.remove(each[0])
 
     def set_block_size(self):
         self.block_img = PIL_Image.open('resources/block.png')
