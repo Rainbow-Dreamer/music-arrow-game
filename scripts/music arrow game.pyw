@@ -437,8 +437,7 @@ class Root(Tk):
                 self.current_place = self.current_place[
                     0] - 1, self.current_place[1] + 1
                 if self.current_place[1] >= len(
-                        self.blocks[0]) or self.current_place[0] >= len(
-                            self.blocks):
+                        self.blocks[0]) or self.current_place[0] < 0:
                     self.start_moving = False
                     return
             elif self.current_direction == 'left down':
