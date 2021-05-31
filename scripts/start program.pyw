@@ -14,7 +14,6 @@ import mido
 import midiutil
 from musicpy import *
 from ast import literal_eval
-import time
 
 abs_path = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abs_path)

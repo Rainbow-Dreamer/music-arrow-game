@@ -331,10 +331,39 @@ class Root(Tk):
         self.set_move_speed_entry.place(x=900, y=80)
         self.set_move_speed.place(x=1000, y=80)
 
+        self.slider = StringVar()
+        self.speed_interval = [speed_interval[0], speed_interval[1]]
+        self.speed_length = self.speed_interval[0] - self.speed_interval[1]
+        current_speed_percentage = round(
+            ((self.speed_interval[0] - move_speed) * 100 / self.speed_length) *
+            2) / 2
+        self.slider.set(f'{current_speed_percentage}%')
+        self.slider_label = ttk.Label(self, textvariable=self.slider)
+        self.slider_label.place(x=730, y=110)
+        self.set_move_speed_bar = ttk.Scale(
+            self,
+            from_=0,
+            to=100,
+            orient=HORIZONTAL,
+            length=200,
+            value=current_speed_percentage,
+            command=lambda e: self.change_move_speed_bar(e))
+        self.set_move_speed_bar.place(x=800, y=110)
+
         self.change_settings_button = ttk.Button(
             self, text='Change Settings', command=self.open_change_settings)
         self.change_settings_button.place(x=850, y=10)
         self.open_settings = False
+
+    def change_move_speed_bar(self, e):
+        current_percentage = round(float(e) * 2) / 2
+        self.slider.set(f'{current_percentage}%')
+        self.set_move_speed_entry.delete(0, END)
+        self.set_move_speed_entry.insert(
+            END,
+            round(self.speed_interval[0] -
+                  self.speed_length * current_percentage / 100))
+        self.change_move_speed()
 
     def switch_play(self):
         if self.start_moving:

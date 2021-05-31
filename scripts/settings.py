@@ -111,3 +111,5 @@ sound_size = -16
 channel = 1
 buffer = 1024
 maxinum_channels = 100
+
+speed_interval = (1010, 10)
