@@ -45,6 +45,9 @@ class Root(Tk):
         self.move_speed = move_speed
         self.stop = False
         self.set_arrows_blocks = []
+        self.set_portal = False
+        self.set_portal_blocks = None
+        self.current_portal_highlight = []
 
         self.bind_keys()
         self.current_time = time.time()
@@ -127,6 +130,7 @@ class Root(Tk):
             self,
             image=self.right_down_arrow_show_img,
             command=lambda: self.set_arrow('right down'))
+        portal_button = ttk.Button(self, image=self.portal_in_show_img, command=lambda: self.set_portal_func())
         left_button.place(x=950, y=200)
         right_button.place(x=1030, y=200)
         up_button.place(x=990, y=160)
@@ -135,6 +139,7 @@ class Root(Tk):
         right_up_button.place(x=1030, y=160)
         left_down_button.place(x=950, y=240)
         right_down_button.place(x=1030, y=240)
+        portal_button.place(x=990, y=280)
         self.set_as_first_button = ttk.Button(self,
                                               text='Set As Start Grid',
                                               command=self.set_as_first)
@@ -245,6 +250,32 @@ class Root(Tk):
         self.move_img = self.move_img.resize(
             (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
         self.move_img = ImageTk.PhotoImage(self.move_img)
+        
+        self.portal_in_img = PIL_Image.open('resources/portal_in.png')
+        self.portal_in_img = self.portal_in_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.portal_in_show_img = ImageTk.PhotoImage(
+            self.portal_in_img.copy())                
+        self.portal_in_img = ImageTk.PhotoImage(
+            self.portal_in_img)
+        
+        self.portal_in_highlight_img = PIL_Image.open('resources/portal_in_highlight.png')
+        self.portal_in_highlight_img = self.portal_in_highlight_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.portal_in_highlight_img = ImageTk.PhotoImage(
+            self.portal_in_highlight_img)        
+        
+        self.portal_out_img = PIL_Image.open('resources/portal_out.png')
+        self.portal_out_img = self.portal_out_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.portal_out_img = ImageTk.PhotoImage(
+            self.portal_out_img)        
+        
+        self.portal_out_highlight_img = PIL_Image.open('resources/portal_out_highlight.png')
+        self.portal_out_highlight_img = self.portal_out_highlight_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.portal_out_highlight_img = ImageTk.PhotoImage(
+            self.portal_out_highlight_img)                
 
     def draw_settings_buttons(self):
         self.set_size_button = ttk.Button(self,
@@ -553,6 +584,10 @@ class Root(Tk):
             current_block.configure(image=self.block_img)
             current_block.direction = 'none'
 
+    def set_portal_func(self):
+        if not self.set_portal:
+            self.set_portal = 'portal in'
+    
     def reset_arrow_img(self, i=0, j=0, current_block=None):
         current_first = False
 
@@ -601,6 +636,8 @@ class Root(Tk):
                 right_down_first_arrow_img)
         elif current_block.direction == 'none':
             current_block.configure(image=self.block_img)
+        elif current_block.direction == 'portal':
+            current_block.configure(image=self.portal_in_img if current_block.portal_direction == 'in' else self.portal_out_img)        
 
     def clear_current_block(self):
         current_first = False
@@ -840,6 +877,42 @@ class Root(Tk):
                 if current_block.direction_num >= 8:
                     current_block.direction_num = 0
             self.set_arrow(self.direction_list[current_block.direction_num])
+        if self.set_portal:
+            if self.set_portal == 'portal in':
+                self.set_portal = 'portal out'
+                current_block.configure(image=self.portal_in_img)
+                current_block.direction = 'portal'            
+                current_block.portal_direction = 'in'
+                self.set_portal_blocks = i, j                
+            elif self.set_portal == 'portal out':
+                self.set_portal = False
+                current_block.configure(image=self.portal_out_img)
+                current_block.direction = 'portal'            
+                current_block.portal_direction = 'out'
+                current_block.portal_block = self.set_portal_blocks
+                self.blocks[self.set_portal_blocks[0]][self.set_portal_blocks[1]].portal_block = i, j
+        else:
+            if current_block.direction == 'portal':
+                if current_block.portal_direction == 'in':
+                    current_portal_highlight = [(i, j), current_block.portal_block]            
+                else:
+                    current_portal_highlight = [current_block.portal_block, (i, j)]                           
+                if self.current_portal_highlight:
+                    for each in self.current_portal_highlight:
+                        self.reset_arrow_img(*each)
+                    if current_portal_highlight == self.current_portal_highlight:
+                        self.current_portal_highlight.clear()
+                    else:
+                        self.current_portal_highlight = current_portal_highlight
+                        portal_in, portal_out = self.current_portal_highlight
+                        self.blocks[portal_in[0]][portal_in[1]].configure(image=self.portal_in_highlight_img)
+                        self.blocks[portal_out[0]][portal_out[1]].configure(image=self.portal_out_highlight_img)
+                else:
+                    self.current_portal_highlight = current_portal_highlight
+                    portal_in, portal_out = self.current_portal_highlight
+                    self.blocks[portal_in[0]][portal_in[1]].configure(image=self.portal_in_highlight_img)
+                    self.blocks[portal_out[0]][portal_out[1]].configure(image=self.portal_out_highlight_img)                    
+                
 
     def play_current_note_move(self, i, j):
         current_block = self.blocks[i][j]
@@ -930,6 +1003,32 @@ class Root(Tk):
         self.move_img = self.move_img.resize(
             (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
         self.move_img = ImageTk.PhotoImage(self.move_img)
+        
+        self.portal_in_img = PIL_Image.open('resources/portal_in.png')
+        self.portal_in_img = self.portal_in_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.portal_in_img = ImageTk.PhotoImage(
+            self.portal_in_img)
+        
+        self.portal_in_highlight_img = PIL_Image.open('resources/portal_in_highlight.png')
+        self.portal_in_highlight_img = self.portal_in_highlight_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.portal_in_highlight_img = ImageTk.PhotoImage(
+            self.portal_in_highlight_img)                
+        
+        self.portal_out_img = PIL_Image.open('resources/portal_out.png')
+        self.portal_out_img = self.portal_out_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.portal_out_img = ImageTk.PhotoImage(
+            self.portal_out_img)        
+        
+        self.portal_out_highlight_img = PIL_Image.open('resources/portal_out_highlight.png')
+        self.portal_out_highlight_img = self.portal_out_highlight_img.resize(
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+        self.portal_out_highlight_img = ImageTk.PhotoImage(
+            self.portal_out_highlight_img)                
+        
+
         for i in self.blocks:
             for j in i:
                 j.configure(image=self.block_img, width=self.block_width)
