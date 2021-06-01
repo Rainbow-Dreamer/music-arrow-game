@@ -467,7 +467,10 @@ class Root(Tk):
             current_block = self.blocks[self.current_place[0]][
                 self.current_place[1]]
             if current_block.direction == 'portal' and current_block.portal_direction == 'in':
-                self.current_place = list(current_block.portal_block)
+                try:
+                    self.current_place = list(current_block.portal_block)
+                except:
+                    pass
             elif self.current_direction == 'left':
                 self.current_place = self.current_place[
                     0], self.current_place[1] - 1
