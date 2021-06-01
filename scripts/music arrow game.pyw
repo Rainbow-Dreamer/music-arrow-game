@@ -533,6 +533,10 @@ class Root(Tk):
             self.after(self.move_speed, lambda: self.start(False))
 
     def set_arrow(self, mode, e=None):
+        current_focus = self.current_focus
+        current_block = self.blocks[current_focus[0]][current_focus[1]]
+        if current_block.direction == 'portal':
+            return
         if e:
             current_time = time.time()
             current_interval = current_time - self.current_time
@@ -540,14 +544,12 @@ class Root(Tk):
             if current_interval >= 0.02:
                 mode = e.keysym.lower()
         current_first = False
-        current_focus = self.current_focus
         if (not self.set_arrows_blocks) or (self.set_arrows_blocks
                                             and list(current_focus)
                                             == self.set_arrows_blocks[0]):
             current_first = True
         if list(current_focus) not in self.set_arrows_blocks:
             self.set_arrows_blocks.append(list(current_focus))
-        current_block = self.blocks[current_focus[0]][current_focus[1]]
         if mode == 'left':
             current_block.configure(
                 image=self.left_arrow_img if not current_first else self.
