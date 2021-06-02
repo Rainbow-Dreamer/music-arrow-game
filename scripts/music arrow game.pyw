@@ -387,6 +387,59 @@ class Root(Tk):
         self.change_settings_button.place(x=850, y=10)
         self.open_settings = False
 
+        self.set_as_notes = ttk.Button(self,
+                                       text='Set Notes',
+                                       command=self.change_notes)
+        self.set_as_notes_label = ttk.Label(self, text='Notes')
+        self.set_as_notes_entry = ttk.Entry(self, width=20)
+        self.set_as_notes_entry.insert(END, '')
+        self.set_as_notes_label.place(x=600, y=350)
+        self.set_as_notes_entry.place(x=680, y=350)
+        self.set_as_notes.place(x=850, y=350)
+
+        self.set_scale = ttk.Button(self,
+                                    text='Set Scale / Mode',
+                                    command=self.change_scale)
+        self.set_scale_label = ttk.Label(self, text='Scale / Mode')
+        self.set_scale_entry = ttk.Entry(self, width=20)
+        self.set_scale_entry.insert(END, '')
+        self.set_scale_label.place(x=600, y=400)
+        self.set_scale_entry.place(x=690, y=400)
+        self.set_scale.place(x=850, y=400)
+
+    def change_scale(self):
+        self.msg.configure(text='')
+        current_scale = self.set_scale_entry.get().lower()
+        current_scale = scaleTypes[current_scale][:-1]
+        if current_scale == 'not found':
+            self.msg.configure(text='Error: This scale/mode is not found')
+            return
+        self.set_chord_intervals_entry.delete(0, END)
+        self.set_chord_intervals_entry.insert(END, str(current_scale))
+        self.change_chord_intervals()
+
+    def change_notes(self):
+        self.msg.configure(text='')
+        current_notes = self.set_as_notes_entry.get()
+        if ',' in current_notes:
+            current_notes = current_notes.replace(' ', '').split(',')
+        else:
+            current_notes = current_notes.replace('  ', ' ').split(' ')
+        try:
+            current_notes = chord(current_notes)
+        except:
+            self.msg.configure(text='Error: Some of the notes is invalid')
+            return
+        self.current_chord = current_notes
+        self.current_chord_intervals = (
+            self.current_chord +
+            self.current_chord[1].up(octave)).intervalof(cummulative=False)
+        self.current_chord_names = self.current_chord.names()
+        self.start_octave = current_notes[1].num
+        self.set_start_octave_entry.delete(0, END)
+        self.set_start_octave_entry.insert(END, self.start_octave)
+        self.reset_note()
+
     def change_move_speed_bar(self, e):
         current_percentage = round(float(e) * 2) / 2
         self.slider.set(f'{current_percentage}%')
@@ -760,13 +813,14 @@ class Root(Tk):
         if not current_chord_intervals:
             self.chord_intervals = None
         else:
-            self.chord_intervals = literal_eval(current_chord_intervals)
-        if self.chord_intervals is not None:
-            self.current_chord = getchord_by_interval(self.chord_root,
-                                                      self.chord_intervals,
-                                                      cummulative=False)
-        else:
-            self.current_chord = C(chord_root + chord_type)
+            try:
+                self.chord_intervals = literal_eval(current_chord_intervals)
+                self.current_chord = getchord_by_interval(self.chord_root,
+                                                          self.chord_intervals,
+                                                          cummulative=False)
+            except:
+                self.msg.configure(text='Error: Chord interval is invalid')
+                return
         self.current_chord_intervals = (
             self.current_chord +
             self.current_chord[1].up(octave)).intervalof(cummulative=False)
@@ -799,7 +853,7 @@ class Root(Tk):
                 current_row.append(current_block)
             self.blocks.append(current_row)
         self.msg = ttk.Label(self, text='')
-        self.msg.place(x=600, y=400)
+        self.msg.place(x=600, y=500)
 
     def set_notes(self):
         global chord_root
