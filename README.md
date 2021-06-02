@@ -28,9 +28,12 @@ The note names with octaves will appear on each grid as the note that each grid 
 
 The move speed is the time interval of each move in milliseconds (ms), the smaller it is, the faster the playing moves through the grids.
 
-There are some advanced options in this game.  
-You can set a portal in the board, and when the moving go through the portal, it will go out from the another side of the portal. Click the circle button under the arrows buttons and click on a grid to set an in portal, and click on another grid to set an out portal. You can click the right button of mouse to cancel setting a portal. Note that in default the portal doesn't change the current direction of moving, but this game supports direction change through a portal. After you click on the portal button, you can then click one of the arrows buttons to make the portal has its own direction change function like the arrows. Then you can set a portal which can change direction while also being as a portal.  
-You can directly set the notes of the chord by entering the name of the notes (could be with or without octaves), separated with `,` or ` `.  
+There are some advanced options in this game.
+
+You can set a portal in the board, and when the moving go through the portal, it will go out from the another side of the portal. Click the circle button under the arrows buttons and click on a grid to set an in portal, and click on another grid to set an out portal. You can click the right button of mouse to cancel setting a portal. Note that in default the portal doesn't change the current direction of moving, but this game supports direction change through a portal. After you click on the portal button, you can then click one of the arrows buttons to make the portal has its own direction change function like the arrows. Then you can set a portal which can change direction while also being as a portal.
+
+You can directly set the notes of the chord by entering the name of the notes (could be with or without octaves), separated with `,` or ` `.
+
 If you want to set a scale/mode, you can enter the name of the scale/mode, the valid scale/mode name can be looked at `scaleTypes` in the file database.py in musicpy folder.
 
 Here is a screenshot of this software:  
