@@ -28,5 +28,8 @@ The note names with octaves will appear on each grid as the note that each grid 
 
 The move speed is the time interval of each move in milliseconds (ms), the smaller it is, the faster the playing moves through the grids.
 
+There are some advanced options in this game, you can set a portal in the board, and when the moving go through the portal, it will go out from the another side of the portal.  
+You can directly set the notes of the chord by entering the name of the notes (could be with or without octaves), separated with `,` or ` `. If you want to set a scale/mode, you can enter the name of the scale/mode, the valid scale/mode name can be looked at `ScaleTypes` in the file database.py in musicpy folder.
+
 Here is a screenshot of this software:  
 ![image](https://github.com/Rainbow-Dreamer/music-arrow-game/blob/main/previews/1.jpg)
