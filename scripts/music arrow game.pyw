@@ -421,10 +421,11 @@ class Root(Tk):
     def change_scale(self):
         self.msg.configure(text='')
         current_scale = self.set_scale_entry.get().lower()
-        current_scale = scaleTypes[current_scale][:-1]
+        current_scale = scaleTypes[current_scale]
         if current_scale == 'not found':
             self.msg.configure(text='Error: This scale/mode is not found')
             return
+        current_scale = current_scale[:-1]
         self.set_chord_intervals_entry.delete(0, END)
         self.set_chord_intervals_entry.insert(END, str(current_scale))
         self.change_chord_intervals()
