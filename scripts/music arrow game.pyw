@@ -77,6 +77,17 @@ class Root(Tk):
         self.bind("<Control-e>", lambda e: self.clear_current_block())
         self.bind("<Control-r>", lambda e: self.reset_all_blocks())
         self.bind("<Control-t>", lambda e: self.open_change_settings())
+        self.bind('<Button-3>', lambda e: self.cancel_set_portal())
+
+    def cancel_set_portal(self):
+        if self.set_portal:
+            self.set_portal = False
+            if self.set_portal_blocks:
+                try:
+                    self.clear_block(*self.set_portal_blocks)
+                except:
+                    pass
+                self.set_portal_blocks = None
 
     def draw_arrows_settings_buttons(self):
         clear_button = ttk.Button(self,
@@ -522,6 +533,8 @@ class Root(Tk):
             if current_block.direction == 'portal' and current_block.portal_direction == 'in':
                 try:
                     self.current_place = list(current_block.portal_block)
+                    if current_block.change_direction != 'keep':
+                        self.current_direction = current_block.change_direction
                 except:
                     pass
             elif self.current_direction == 'left':
@@ -586,6 +599,9 @@ class Root(Tk):
             self.after(self.move_speed, lambda: self.start(False))
 
     def set_arrow(self, mode, e=None):
+        if self.set_portal:
+            self.portal_direction = mode
+            return
         current_focus = self.current_focus
         current_block = self.blocks[current_focus[0]][current_focus[1]]
         if current_block.direction == 'portal':
@@ -659,6 +675,7 @@ class Root(Tk):
     def set_portal_func(self):
         if not self.set_portal:
             self.set_portal = 'portal in'
+            self.portal_direction = 'keep'
 
     def reset_arrow_img(self, i=0, j=0, current_block=None):
         current_first = False
@@ -976,6 +993,7 @@ class Root(Tk):
                 current_block.configure(image=self.portal_in_img)
                 current_block.direction = 'portal'
                 current_block.portal_direction = 'in'
+                current_block.change_direction = self.portal_direction
                 self.set_portal_blocks = i, j
             elif self.set_portal == 'portal out':
                 self.set_portal = False
@@ -985,6 +1003,7 @@ class Root(Tk):
                 current_block.portal_block = self.set_portal_blocks
                 self.blocks[self.set_portal_blocks[0]][
                     self.set_portal_blocks[1]].portal_block = i, j
+                self.set_portal_blocks = None
         else:
             if current_block.direction == 'portal':
                 if current_block.portal_direction == 'in':
