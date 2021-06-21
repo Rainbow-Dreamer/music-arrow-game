@@ -418,6 +418,30 @@ class Root(Tk):
         self.set_scale_entry.place(x=690, y=400)
         self.set_scale.place(x=850, y=400)
 
+        self.set_chord_name = ttk.Button(self,
+                                         text='Set Chord Name',
+                                         command=self.change_chord_name)
+        self.set_chord_name_label = ttk.Label(self, text='Chord Name')
+        self.set_chord_name_entry = ttk.Entry(self, width=20)
+        self.set_chord_name_entry.insert(END, '')
+        self.set_chord_name_label.place(x=600, y=450)
+        self.set_chord_name_entry.place(x=690, y=450)
+        self.set_chord_name.place(x=850, y=450)
+
+    def change_chord_name(self):
+        self.msg.configure(text='')
+        current_chord_name = self.set_chord_name_entry.get()
+        current_notes = C(current_chord_name, self.start_octave)
+        if type(current_notes) != chord:
+            self.msg.configure(text='Error: Invalid chord name')
+            return
+        self.current_chord = current_notes
+        self.current_chord_intervals = (
+            self.current_chord +
+            self.current_chord[1].up(octave)).intervalof(cummulative=False)
+        self.current_chord_names = self.current_chord.names()
+        self.reset_note()
+
     def change_scale(self):
         self.msg.configure(text='')
         current_scale = self.set_scale_entry.get().lower()
