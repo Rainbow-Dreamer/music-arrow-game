@@ -435,6 +435,9 @@ class Root(Tk):
         if type(current_notes) != chord:
             self.msg.configure(text='Error: Invalid chord name')
             return
+        for i in current_notes:
+            if i.name not in standard2:
+                i.name = standard_dict[i.name]
         self.current_chord = current_notes
         self.current_chord_intervals = (
             self.current_chord +
