@@ -441,7 +441,7 @@ class Root(Tk):
         self.current_chord = current_notes
         self.current_chord_intervals = (
             self.current_chord +
-            self.current_chord[1].up(octave)).intervalof(cummulative=False)
+            self.current_chord[0].up(octave)).intervalof(cummulative=False)
         self.current_chord_names = self.current_chord.names()
         self.reset_note()
 
@@ -472,7 +472,7 @@ class Root(Tk):
         self.current_chord = current_notes
         self.current_chord_intervals = (
             self.current_chord +
-            self.current_chord[1].up(octave)).intervalof(cummulative=False)
+            self.current_chord[0].up(octave)).intervalof(cummulative=False)
         self.current_chord_names = self.current_chord.names()
         self.start_octave = current_notes[1].num
         self.set_start_octave_entry.delete(0, END)
@@ -826,7 +826,7 @@ class Root(Tk):
             return
         self.current_chord_intervals = (
             self.current_chord +
-            self.current_chord[1].up(octave)).intervalof(cummulative=False)
+            self.current_chord[0].up(octave)).intervalof(cummulative=False)
         self.current_chord_names = self.current_chord.names()
         self.reset_note()
 
@@ -844,7 +844,7 @@ class Root(Tk):
             self.current_chord = C(self.chord_root + self.chord_type)
             self.current_chord_intervals = (
                 self.current_chord +
-                self.current_chord[1].up(octave)).intervalof(cummulative=False)
+                self.current_chord[0].up(octave)).intervalof(cummulative=False)
             self.current_chord_names = self.current_chord.names()
             self.reset_note()
 
@@ -868,7 +868,7 @@ class Root(Tk):
                 return
         self.current_chord_intervals = (
             self.current_chord +
-            self.current_chord[1].up(octave)).intervalof(cummulative=False)
+            self.current_chord[0].up(octave)).intervalof(cummulative=False)
         self.current_chord_names = self.current_chord.names()
         self.reset_note()
 
@@ -934,14 +934,14 @@ class Root(Tk):
                 self.msg.configure(text='Error: Chord type is not found')
             return
         current_chord_intervals = (current_chord +
-                                   current_chord[1].up(octave)).intervalof(
+                                   current_chord[0].up(octave)).intervalof(
                                        cummulative=False)
         current_chord_names = current_chord.names()
         self.current_chord_intervals = current_chord_intervals
         self.current_chord_names = current_chord_names
 
         counter = 0
-        start_note = note(self.current_chord[1].name, self.start_octave)
+        start_note = note(self.current_chord[0].name, self.start_octave)
         for i in range(self.block_size[1]):
             current_block = self.blocks[i][0]
             if i == 0:
@@ -972,7 +972,7 @@ class Root(Tk):
 
     def reset_note(self):
         counter = 0
-        start_note = note(self.current_chord[1].name, self.start_octave)
+        start_note = note(self.current_chord[0].name, self.start_octave)
         for i in range(self.block_size[1]):
             current_block = self.blocks[i][0]
             if i == 0:
