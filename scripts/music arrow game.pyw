@@ -1,4 +1,4 @@
-with open('scripts/settings.py', encoding='utf-8-sig') as f:
+with open('scripts/settings.py', encoding='utf-8') as f:
     exec(f.read())
 
 
@@ -23,6 +23,7 @@ note_sounds = load(notedict, sound_path, sound_format, global_volume)
 
 
 class Root(Tk):
+
     def __init__(self):
         super(Root, self).__init__()
         self.title("Music Arrow Game")

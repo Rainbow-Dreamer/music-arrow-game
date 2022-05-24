@@ -18,7 +18,7 @@ abs_path = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abs_path)
 sys.path.append(abs_path)
 sys.path.append('scripts')
-with open('scripts/musicpy/__init__.py', encoding='utf-8-sig') as f:
+with open('scripts/musicpy/__init__.py', encoding='utf-8') as f:
     exec(f.read())
 with open('scripts/music arrow game.pyw') as f:
     exec(f.read())
