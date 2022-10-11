@@ -5,13 +5,10 @@ from PIL import Image as PIL_Image
 from PIL import ImageTk
 import time
 import random
-import keyboard
 from copy import deepcopy as copy
 import os, sys
 import pygame
-import keyboard
-import mido
-import midiutil
+import mido_fix
 from ast import literal_eval
 
 abs_path = os.path.dirname(os.path.abspath(__file__))
