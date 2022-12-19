@@ -865,9 +865,8 @@ class Root(Tk):
         else:
             try:
                 self.chord_intervals = literal_eval(current_chord_intervals)
-                self.current_chord = getchord_by_interval(self.chord_root,
-                                                          self.chord_intervals,
-                                                          cummulative=False)
+                self.current_chord = get_chord_by_interval(
+                    self.chord_root, self.chord_intervals, cummulative=False)
             except:
                 self.msg.configure(text='Error: Chord interval is invalid')
                 return
@@ -922,9 +921,9 @@ class Root(Tk):
             chord_root = standard_dict[chord_root]
         self.chord_root = chord_root
         if chord_intervals is not None:
-            current_chord = getchord_by_interval(chord_root,
-                                                 chord_intervals,
-                                                 cummulative=False)
+            current_chord = get_chord_by_interval(chord_root,
+                                                  chord_intervals,
+                                                  cummulative=False)
         else:
             current_chord = C(chord_root + chord_type)
 
