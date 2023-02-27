@@ -162,93 +162,93 @@ class Root(Tk):
     def load_arrows_imgs(self):
         self.right_arrow_img = PIL_Image.open('resources/right.png')
         self.right_arrow_img = self.right_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.right_arrow_show_img = ImageTk.PhotoImage(
             self.right_arrow_img.copy())
         self.right_arrow_img = ImageTk.PhotoImage(self.right_arrow_img)
         self.right_arrow_first_img = PIL_Image.open(
             'resources/right_first.png')
         self.right_arrow_first_img = self.right_arrow_first_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.right_arrow_first_img = ImageTk.PhotoImage(
             self.right_arrow_first_img)
 
         self.left_arrow_img = PIL_Image.open('resources/left.png')
         self.left_arrow_img = self.left_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.left_arrow_show_img = ImageTk.PhotoImage(
             self.left_arrow_img.copy())
         self.left_arrow_img = ImageTk.PhotoImage(self.left_arrow_img)
         self.left_arrow_first_img = PIL_Image.open('resources/left_first.png')
         self.left_arrow_first_img = self.left_arrow_first_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.left_arrow_first_img = ImageTk.PhotoImage(
             self.left_arrow_first_img)
 
         self.up_arrow_img = PIL_Image.open('resources/up.png')
         self.up_arrow_img = self.up_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.up_arrow_show_img = ImageTk.PhotoImage(self.up_arrow_img.copy())
         self.up_arrow_img = ImageTk.PhotoImage(self.up_arrow_img)
         self.up_arrow_first_img = PIL_Image.open('resources/up_first.png')
         self.up_arrow_first_img = self.up_arrow_first_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.up_arrow_first_img = ImageTk.PhotoImage(self.up_arrow_first_img)
 
         self.down_arrow_img = PIL_Image.open('resources/down.png')
         self.down_arrow_img = self.down_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.down_arrow_show_img = ImageTk.PhotoImage(
             self.down_arrow_img.copy())
         self.down_arrow_img = ImageTk.PhotoImage(self.down_arrow_img)
         self.down_arrow_first_img = PIL_Image.open('resources/down_first.png')
         self.down_arrow_first_img = self.down_arrow_first_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.down_arrow_first_img = ImageTk.PhotoImage(
             self.down_arrow_first_img)
 
         self.left_up_arrow_img = PIL_Image.open('resources/left_up.png')
         self.left_up_arrow_img = self.left_up_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.left_up_arrow_show_img = ImageTk.PhotoImage(
             self.left_up_arrow_img.copy())
         self.left_up_arrow_img = ImageTk.PhotoImage(self.left_up_arrow_img)
         self.left_up_first_arrow_img = PIL_Image.open(
             'resources/left_up_first.png')
         self.left_up_first_arrow_img = self.left_up_first_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.left_up_first_arrow_img = ImageTk.PhotoImage(
             self.left_up_first_arrow_img)
 
         self.right_up_arrow_img = PIL_Image.open('resources/right_up.png')
         self.right_up_arrow_img = self.right_up_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.right_up_arrow_show_img = ImageTk.PhotoImage(
             self.right_up_arrow_img.copy())
         self.right_up_arrow_img = ImageTk.PhotoImage(self.right_up_arrow_img)
         self.right_up_first_arrow_img = PIL_Image.open(
             'resources/right_up_first.png')
         self.right_up_first_arrow_img = self.right_up_first_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.right_up_first_arrow_img = ImageTk.PhotoImage(
             self.right_up_first_arrow_img)
 
         self.left_down_arrow_img = PIL_Image.open('resources/left_down.png')
         self.left_down_arrow_img = self.left_down_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.left_down_arrow_show_img = ImageTk.PhotoImage(
             self.left_down_arrow_img.copy())
         self.left_down_arrow_img = ImageTk.PhotoImage(self.left_down_arrow_img)
         self.left_down_first_arrow_img = PIL_Image.open(
             'resources/left_down_first.png')
         self.left_down_first_arrow_img = self.left_down_first_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.left_down_first_arrow_img = ImageTk.PhotoImage(
             self.left_down_first_arrow_img)
 
         self.right_down_arrow_img = PIL_Image.open('resources/right_down.png')
         self.right_down_arrow_img = self.right_down_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.right_down_arrow_show_img = ImageTk.PhotoImage(
             self.right_down_arrow_img.copy())
         self.right_down_arrow_img = ImageTk.PhotoImage(
@@ -256,37 +256,37 @@ class Root(Tk):
         self.right_down_first_arrow_img = PIL_Image.open(
             'resources/right_down_first.png')
         self.right_down_first_arrow_img = self.right_down_first_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.right_down_first_arrow_img = ImageTk.PhotoImage(
             self.right_down_first_arrow_img)
 
         self.move_img = PIL_Image.open('resources/move.png')
         self.move_img = self.move_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.move_img = ImageTk.PhotoImage(self.move_img)
 
         self.portal_in_img = PIL_Image.open('resources/portal_in.png')
         self.portal_in_img = self.portal_in_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.portal_in_show_img = ImageTk.PhotoImage(self.portal_in_img.copy())
         self.portal_in_img = ImageTk.PhotoImage(self.portal_in_img)
 
         self.portal_in_highlight_img = PIL_Image.open(
             'resources/portal_in_highlight.png')
         self.portal_in_highlight_img = self.portal_in_highlight_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.portal_in_highlight_img = ImageTk.PhotoImage(
             self.portal_in_highlight_img)
 
         self.portal_out_img = PIL_Image.open('resources/portal_out.png')
         self.portal_out_img = self.portal_out_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.portal_out_img = ImageTk.PhotoImage(self.portal_out_img)
 
         self.portal_out_highlight_img = PIL_Image.open(
             'resources/portal_out_highlight.png')
         self.portal_out_highlight_img = self.portal_out_highlight_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.portal_out_highlight_img = ImageTk.PhotoImage(
             self.portal_out_highlight_img)
 
@@ -883,7 +883,7 @@ class Root(Tk):
         self.block_img = PIL_Image.open('resources/block.png')
         self.unit_size = unit_size
         self.block_img = self.block_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.block_img = ImageTk.PhotoImage(self.block_img)
         self.block_width = self.block_img.width
         self.blocks = []
@@ -1108,75 +1108,75 @@ class Root(Tk):
         self.unit_size = int(self.set_block_size_width_entry.get()), int(
             self.set_block_size_height_entry.get())
         self.block_img = self.block_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.block_img = ImageTk.PhotoImage(self.block_img)
         self.block_width = self.block_img.width
         self.right_arrow_img = PIL_Image.open('resources/right.png')
         self.right_arrow_img = self.right_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.right_arrow_img = ImageTk.PhotoImage(self.right_arrow_img)
         self.right_arrow_first_img = PIL_Image.open(
             'resources/right_first.png')
         self.right_arrow_first_img = self.right_arrow_first_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.right_arrow_first_img = ImageTk.PhotoImage(
             self.right_arrow_first_img)
 
         self.left_arrow_img = PIL_Image.open('resources/left.png')
         self.left_arrow_img = self.left_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.left_arrow_img = ImageTk.PhotoImage(self.left_arrow_img)
         self.left_arrow_first_img = PIL_Image.open('resources/left_first.png')
         self.left_arrow_first_img = self.left_arrow_first_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.left_arrow_first_img = ImageTk.PhotoImage(
             self.left_arrow_first_img)
 
         self.up_arrow_img = PIL_Image.open('resources/up.png')
         self.up_arrow_img = self.up_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.up_arrow_img = ImageTk.PhotoImage(self.up_arrow_img)
         self.up_arrow_first_img = PIL_Image.open('resources/up_first.png')
         self.up_arrow_first_img = self.up_arrow_first_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.up_arrow_first_img = ImageTk.PhotoImage(self.up_arrow_first_img)
 
         self.down_arrow_img = PIL_Image.open('resources/down.png')
         self.down_arrow_img = self.down_arrow_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.down_arrow_img = ImageTk.PhotoImage(self.down_arrow_img)
         self.down_arrow_first_img = PIL_Image.open('resources/down_first.png')
         self.down_arrow_first_img = self.down_arrow_first_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.down_arrow_first_img = ImageTk.PhotoImage(
             self.down_arrow_first_img)
 
         self.move_img = PIL_Image.open('resources/move.png')
         self.move_img = self.move_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.move_img = ImageTk.PhotoImage(self.move_img)
 
         self.portal_in_img = PIL_Image.open('resources/portal_in.png')
         self.portal_in_img = self.portal_in_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.portal_in_img = ImageTk.PhotoImage(self.portal_in_img)
 
         self.portal_in_highlight_img = PIL_Image.open(
             'resources/portal_in_highlight.png')
         self.portal_in_highlight_img = self.portal_in_highlight_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.portal_in_highlight_img = ImageTk.PhotoImage(
             self.portal_in_highlight_img)
 
         self.portal_out_img = PIL_Image.open('resources/portal_out.png')
         self.portal_out_img = self.portal_out_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.portal_out_img = ImageTk.PhotoImage(self.portal_out_img)
 
         self.portal_out_highlight_img = PIL_Image.open(
             'resources/portal_out_highlight.png')
         self.portal_out_highlight_img = self.portal_out_highlight_img.resize(
-            (self.unit_size[0], self.unit_size[1]), PIL_Image.ANTIALIAS)
+            (self.unit_size[0], self.unit_size[1]), PIL_Image.Resampling.LANCZOS)
         self.portal_out_highlight_img = ImageTk.PhotoImage(
             self.portal_out_highlight_img)
 
