@@ -10,6 +10,8 @@ import os, sys
 import pygame
 import mido_fix
 from ast import literal_eval
+import chunk
+import dataclasses
 
 abs_path = os.path.dirname(os.path.abspath(__file__))
 os.chdir(abs_path)
