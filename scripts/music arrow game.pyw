@@ -432,25 +432,28 @@ class Root(Tk):
     def change_chord_name(self):
         self.msg.configure(text='')
         current_chord_name = self.set_chord_name_entry.get()
-        current_notes = C(current_chord_name, self.start_octave)
+        try:
+            current_notes = C(current_chord_name, self.start_octave)
+        except:
+            pass
         if type(current_notes) != chord:
             self.msg.configure(text='Error: Invalid chord name')
             return
         for i in current_notes:
             if i.name not in database.standard2:
-                i.name = standard_dict[i.name]
+                i.name = database.standard_dict[i.name]
         self.current_chord = current_notes
         self.current_chord_intervals = (
             self.current_chord +
             self.current_chord[0].up(database.octave)).intervalof(
-                cummulative=False)
+                cumulative=False)
         self.current_chord_names = self.current_chord.names()
         self.reset_note()
 
     def change_scale(self):
         self.msg.configure(text='')
         current_scale = self.set_scale_entry.get().lower()
-        current_scale = database.scaleTypes[current_scale]
+        current_scale = [i.value for i in database.scaleTypes[current_scale]]
         if current_scale == 'not found':
             self.msg.configure(text='Error: This scale/mode is not found')
             return
@@ -475,7 +478,7 @@ class Root(Tk):
         self.current_chord_intervals = (
             self.current_chord +
             self.current_chord[0].up(database.octave)).intervalof(
-                cummulative=False)
+                cumulative=False)
         self.current_chord_names = self.current_chord.names()
         self.start_octave = current_notes[1].num
         self.set_start_octave_entry.delete(0, END)
@@ -817,7 +820,10 @@ class Root(Tk):
         self.msg.configure(text='')
         current_chord_type = self.set_chord_type_entry.get()
         self.chord_type = current_chord_type
-        self.current_chord = C(self.chord_root + self.chord_type)
+        try:
+            self.current_chord = C(self.chord_root + self.chord_type)
+        except:
+            pass
         if type(self.current_chord) == str or self.current_chord is None:
             if any(i.isdigit() for i in self.chord_root):
                 self.msg.configure(
@@ -830,7 +836,7 @@ class Root(Tk):
         self.current_chord_intervals = (
             self.current_chord +
             self.current_chord[0].up(database.octave)).intervalof(
-                cummulative=False)
+                cumulative=False)
         self.current_chord_names = self.current_chord.names()
         self.reset_note()
 
@@ -839,17 +845,20 @@ class Root(Tk):
         current_chord_root = self.set_chord_root_entry.get()
         if current_chord_root:
             if current_chord_root not in database.standard2:
-                if current_chord_root not in standard_dict:
+                if current_chord_root not in database.standard_dict:
                     self.msg.configure(
                         text='Error: Chord root is not a valid note name')
                     return
-                current_chord_root = standard_dict[current_chord_root]
+                current_chord_root = database.standard_dict[current_chord_root]
             self.chord_root = current_chord_root
-            self.current_chord = C(self.chord_root + self.chord_type)
+            try:
+                self.current_chord = C(self.chord_root + self.chord_type)
+            except:
+                pass
             self.current_chord_intervals = (
                 self.current_chord +
                 self.current_chord[0].up(database.octave)).intervalof(
-                    cummulative=False)
+                    cumulative=False)
             self.current_chord_names = self.current_chord.names()
             self.reset_note()
 
@@ -866,14 +875,14 @@ class Root(Tk):
             try:
                 self.chord_intervals = literal_eval(current_chord_intervals)
                 self.current_chord = get_chord_by_interval(
-                    self.chord_root, self.chord_intervals, cummulative=False)
+                    self.chord_root, self.chord_intervals, cumulative=False)
             except:
                 self.msg.configure(text='Error: Chord interval is invalid')
                 return
         self.current_chord_intervals = (
             self.current_chord +
             self.current_chord[0].up(database.octave)).intervalof(
-                cummulative=False)
+                cumulative=False)
         self.current_chord_names = self.current_chord.names()
         self.reset_note()
 
@@ -914,18 +923,21 @@ class Root(Tk):
         self.chord_intervals = chord_intervals
 
         if chord_root not in database.standard2:
-            if chord_root not in standard_dict:
+            if chord_root not in database.standard_dict:
                 self.msg.configure(
                     text='Error: Chord root is not a valid note name')
                 return
-            chord_root = standard_dict[chord_root]
+            chord_root = database.standard_dict[chord_root]
         self.chord_root = chord_root
         if chord_intervals is not None:
             current_chord = get_chord_by_interval(chord_root,
                                                   chord_intervals,
-                                                  cummulative=False)
+                                                  cumulative=False)
         else:
-            current_chord = C(chord_root + chord_type)
+            try:
+                current_chord = C(chord_root + chord_type)
+            except:
+                pass
 
         self.current_chord = current_chord
 
@@ -940,7 +952,7 @@ class Root(Tk):
             return
         current_chord_intervals = (
             current_chord +
-            current_chord[0].up(database.octave)).intervalof(cummulative=False)
+            current_chord[0].up(database.octave)).intervalof(cumulative=False)
         current_chord_names = current_chord.names()
         self.current_chord_intervals = current_chord_intervals
         self.current_chord_names = current_chord_names
@@ -962,7 +974,10 @@ class Root(Tk):
 
         for i in range(self.block_size[1]):
             start_note = self.blocks[i][0].note
-            counter = self.current_chord_names.index(start_note.name)
+            current_chord_names_standard = [
+                standardize_note(i) for i in self.current_chord_names
+            ]
+            counter = current_chord_names_standard.index(start_note.name)
             current_note = start_note
             for j in range(1, self.block_size[0]):
                 current_block = self.blocks[i][j]
@@ -993,7 +1008,10 @@ class Root(Tk):
 
         for i in range(self.block_size[1]):
             start_note = self.blocks[i][0].note
-            counter = self.current_chord_names.index(start_note.name)
+            current_chord_names_standard = [
+                standardize_note(i) for i in self.current_chord_names
+            ]
+            counter = current_chord_names_standard.index(start_note.name)
             current_note = start_note
             for j in range(1, self.block_size[0]):
                 current_block = self.blocks[i][j]
